@@ -1,0 +1,6 @@
+-e .
+psycopg[binary]==3.3.6
+pydantic==2.14.2
+pydantic-settings==2.16.2
+tzdata==2026.6
+pytest==9.2.0

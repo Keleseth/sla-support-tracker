@@ -1,0 +1,50 @@
+[project]
+name = "sla-support-tracker"
+version = "0.1.0"
+description = "Прототип приёма обращений партнёров через n8n и расчёта SLA отдела заботы"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "psycopg[binary]>=3.3",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    "tzdata>=2026.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.0",
+    "mypy>=2.0",
+    "ruff>=0.17",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sla_support_tracker"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "D200", "D213"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["sla_support_tracker"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+mypy_path = "src"
+files = ["src"]
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
