@@ -48,7 +48,7 @@ pip install -r requirements-dev.txt # для разработки
 - Поле `database` из .env `POSTGRES_DB`.
 - `User` и `Password` из .env `POSTGRES_USER` и `POSTGRES_PASSWORD` соответственно.
 - ssl настройка disable.
-- Publish workflow. Теперь флоу готов для обработки входящих запросов и записи данных в бд.
+- **Publish** workflow. Теперь флоу готов для обработки входящих запросов и записи данных в бд.
 
 ## Пример запроса
 Запрос можно отправить из терминала (адрес вебхука лучше проверить в ноде receive events -> production url):
@@ -189,7 +189,7 @@ python -m pytest
 - `docker compose stop` / `docker compose start`, `docker compose down` (или `make docker-down`) и перезапуск компьютера: контейнеры удаляются или останавливаются, а volume остаются. События, журнал отклонённых событий, workflow и credentials на месте, повторно настраивать n8n не нужно.
 
 Что теряется:
-- `docker compose down -v` удаляет volume вместе со всеми данными. После этого при следующем `docker compose up` база создаётся заново: SQL-скрипты из `sql/` выполняются снова (создаётся схема, справочник сотрудников и функция `insert_events`), а n8n нужно настроить с нуля: создать владельца, credential, импортировать `n8n/workflow.json` и опубликовать (см. раздел «Импорт workflow и credentials»).
+- `docker compose down -v` удаляет volume вместе со всеми данными. После этого при следующем `docker compose up` база создаётся заново: SQL-скрипты из `sql/` выполняются снова (создаётся схема, справочник сотрудников и функция `insert_events`), а n8n нужно настроить с нуля: создать владельца, credential, импортировать `n8n/workflow.json` и **ОПУБЛИКОВАТЬ** (см. раздел «Импорт workflow и credentials»).
 
 Скрипты из `sql/` выполняются только при первом создании базы, на пустом volume. Чтобы применить их к уже работающей базе, есть `make db-apply` (повторный запуск безопасен).
 
