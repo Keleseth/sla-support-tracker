@@ -1,0 +1,11 @@
+{
+  "as_of": "2026-09-08T12:00:00+03:00",
+  "conversations_without_data_issue": 17,
+  "answered_in_sla": 12,
+  "answered_late": 3,
+  "unanswered_overdue": 1,
+  "waiting": 1,
+  "data_issue": 2,
+  "sla_compliance_percent": 75.0,
+  "average_response_business_minutes": 22.27
+}

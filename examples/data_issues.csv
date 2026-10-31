@@ -1,0 +1,4 @@
+﻿event_id,conversation_id,issue_code,description
+s16-3,case-s16,invalid_occurred_at,"Поле occurred_at: недопустимое значение, ожидается дата ISO 8601 с часовым поясом, например 2026-09-07T09:40:00+03:00"
+,case-s12,missing_lead_id,Ни у одного события обращения не указан lead_id
+,case-s13,unresolved_employee_author,До первого ответа care есть исходящее сообщение сотрудника с пустым или неизвестным author_id

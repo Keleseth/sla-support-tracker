@@ -1,0 +1,20 @@
+﻿conversation_id,channel,chat_id,lead_id,first_inbound_at,first_response_at,employee_id,employee_name,actual_minutes,business_minutes,status,issue_reason,as_of
+case-s01,telegram,chat-s01,lead-s01,2026-09-07T09:40:00+03:00,2026-09-07T10:37:00+03:00,care-001,Анна Тестовая,57.00,37.00,answered_late,,2026-09-08T12:00:00+03:00
+case-s02,telegram,chat-s02,lead-s02,2026-09-07T21:50:00+03:00,2026-09-08T10:15:00+03:00,care-001,Анна Тестовая,745.00,25.00,answered_in_sla,,2026-09-08T12:00:00+03:00
+case-s03,telegram,chat-s03,lead-s03,2026-09-07T10:00:00+03:00,2026-09-07T10:20:00+03:00,care-001,Анна Тестовая,20.00,20.00,answered_in_sla,,2026-09-08T12:00:00+03:00
+case-s04,telegram,chat-s04,lead-s04,2026-09-07T10:00:00+03:00,2026-09-07T10:25:00+03:00,care-001,Анна Тестовая,25.00,25.00,answered_in_sla,,2026-09-08T12:00:00+03:00
+case-s05,max,chat-s05,lead-s05,2026-09-07T10:00:00+03:00,2026-09-07T10:12:00+03:00,care-001,Анна Тестовая,12.00,12.00,answered_in_sla,,2026-09-08T12:00:00+03:00
+case-s06,telegram,chat-s06,lead-s06,2026-09-07T10:00:00+03:00,2026-09-07T10:30:00+03:00,care-001,Анна Тестовая,30.00,30.00,answered_in_sla,,2026-09-08T12:00:00+03:00
+case-s07,telegram,chat-s07,lead-s07,2026-09-07T10:00:00+03:00,2026-09-07T10:30:01+03:00,care-001,Анна Тестовая,30.02,30.02,answered_late,,2026-09-08T12:00:00+03:00
+case-s08,telegram,chat-s08,lead-s08,2026-09-07T23:00:00+03:00,2026-09-08T09:00:00+03:00,care-001,Анна Тестовая,600.00,0.00,answered_in_sla,,2026-09-08T12:00:00+03:00
+case-s09,telegram,chat-s09,lead-s09,2026-09-08T11:45:00+03:00,,,,15.00,15.00,waiting,,2026-09-08T12:00:00+03:00
+case-s10,telegram,chat-s10,lead-s10,2026-09-08T11:30:00+03:00,,,,30.00,30.00,unanswered_overdue,,2026-09-08T12:00:00+03:00
+case-s11,telegram,chat-s11,lead-s11,2026-09-07T10:00:00+03:00,2026-09-07T10:25:00+03:00,care-001,Анна Тестовая,25.00,25.00,answered_in_sla,,2026-09-08T12:00:00+03:00
+case-s12,telegram,chat-s12,,2026-09-07T10:00:00+03:00,,,,,,data_issue,missing_lead_id,2026-09-08T12:00:00+03:00
+case-s13,telegram,chat-s13,lead-s13,2026-09-07T10:00:00+03:00,,,,,,data_issue,unresolved_employee_author,2026-09-08T12:00:00+03:00
+case-s14,telegram,chat-s14,lead-s14,2026-09-07T10:00:00+03:00,2026-09-07T10:15:00+03:00,care-001,Анна Тестовая,15.00,15.00,answered_in_sla,,2026-09-08T12:00:00+03:00
+case-s15,telegram,chat-s15,lead-s15,2026-09-07T10:00:00+03:00,2026-09-07T10:20:00+03:00,care-001,Анна Тестовая,20.00,20.00,answered_in_sla,,2026-09-08T12:00:00+03:00
+case-s16,telegram,chat-s16,lead-s16,2026-09-07T10:00:00+03:00,2026-09-07T10:20:00+03:00,care-001,Анна Тестовая,20.00,20.00,answered_in_sla,,2026-09-08T12:00:00+03:00
+case-s17,telegram,chat-s17,lead-s17,2026-09-06T10:00:00+03:00,2026-09-06T10:20:00+03:00,care-001,Анна Тестовая,20.00,20.00,answered_in_sla,,2026-09-08T12:00:00+03:00
+case-s18a,telegram,chat-s18a,lead-s18a,2026-09-07T10:00:00+03:00,2026-09-07T10:10:00+03:00,care-001,Анна Тестовая,10.00,10.00,answered_in_sla,,2026-09-08T12:00:00+03:00
+case-s18b,max,chat-s18b,lead-s18b,2026-09-07T10:05:00+03:00,2026-09-07T10:50:00+03:00,care-001,Анна Тестовая,45.00,45.00,answered_late,,2026-09-08T12:00:00+03:00
