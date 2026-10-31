@@ -1,0 +1,69 @@
+{
+  "events": [
+    {
+      "event_id": "evt-101",
+      "conversation_id": "case-mixed",
+      "channel": "telegram",
+      "chat_id": "chat-201",
+      "lead_id": "20001",
+      "occurred_at": "2026-09-07T10:00:00+03:00",
+      "direction": "inbound",
+      "author_id": "partner-201",
+      "author_type": "partner",
+      "message_type": "text",
+      "text": "Здравствуйте, у меня вопрос"
+    },
+    {
+      "event_id": "evt-102",
+      "conversation_id": "case-mixed",
+      "channel": "telegram",
+      "chat_id": "chat-201",
+      "lead_id": "20001",
+      "occurred_at": "2026-09-07T10:05:00+03:00",
+      "direction": "outbound",
+      "author_id": "care-001",
+      "author_type": "employee",
+      "message_type": "text",
+      "text": "Добрый день!"
+    },
+    {
+      "event_id": "evt-103",
+      "conversation_id": "case-mixed",
+      "channel": "telegram",
+      "chat_id": "chat-201",
+      "lead_id": null,
+      "occurred_at": "2026-09-07T10:10:00+03:00",
+      "direction": "inbound",
+      "author_id": "partner-201",
+      "author_type": "partner",
+      "message_type": "file",
+      "text": null
+    },
+    {
+      "event_id": "evt-102",
+      "conversation_id": "case-mixed",
+      "channel": "telegram",
+      "chat_id": "chat-201",
+      "lead_id": "20001",
+      "occurred_at": "2026-09-07T10:05:00+03:00",
+      "direction": "outbound",
+      "author_id": "care-001",
+      "author_type": "employee",
+      "message_type": "text",
+      "text": "Добрый день!"
+    },
+    {
+      "event_id": "evt-104",
+      "conversation_id": "case-mixed",
+      "channel": "telegram",
+      "chat_id": "chat-201",
+      "lead_id": "20001",
+      "occurred_at": "2026-09-07T10:15:00",
+      "direction": "inbound",
+      "author_id": "partner-201",
+      "author_type": "partner",
+      "message_type": "text",
+      "text": "Дата без часового пояса"
+    }
+  ]
+}

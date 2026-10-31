@@ -21,6 +21,5 @@ build/
 .claude/
 
 docs/task_spec.md
-n8n/workflows/single_node_flow.json
 
 output/
