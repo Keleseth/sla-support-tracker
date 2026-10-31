@@ -8,27 +8,27 @@
         "responseMode": "responseNode",
         "options": {}
       },
-      "id": "2a70ba10-80f3-498d-a431-1c342b865825",
+      "id": "86b360de-9150-4e70-b750-0fd6754fc348",
       "name": "receive events",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.2,
       "position": [
-        -400,
-        32
+        0,
+        80
       ],
       "webhookId": "5b0c9e1a-7d34-4e8f-a2b6-1c9f3d7e4a02"
     },
     {
       "parameters": {
-        "jsCode": "const CHANNELS = ['telegram', 'max'];\nconst DIRECTIONS = ['inbound', 'outbound'];\nconst AUTHOR_TYPES = ['partner', 'employee', 'bot', 'system'];\nconst MESSAGE_TYPES = ['text', 'file', 'image', 'voice', 'template'];\n\nconst ISO_DATETIME = /^(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2}):(\\d{2})(?:\\.\\d{1,9})?(Z|[+-]\\d{2}(?::?\\d{2})?)$/;\nconst UTC_OFFSET = /^[+-](\\d{2}):?(\\d{2})?$/;\n\n/** Непустая строка: не пустая и не состоящая из одних пробелов. */\nfunction isNonBlankString(value) {\n  return typeof value === 'string' && value.trim() !== '';\n}\n\n/** Любая строка, в том числе пустая. */\nfunction isString(value) {\n  return typeof value === 'string';\n}\n\n/** Обычный JSON-объект: не null и не массив. */\nfunction isObject(value) {\n  return value !== null && typeof value === 'object' && !Array.isArray(value);\n}\n\n/** Возвращает проверку \"значение входит в список допустимых\". */\nfunction oneOf(allowed) {\n  return (value) => allowed.includes(value);\n}\n\n/** Возвращает проверку \"null или значение, прошедшее исходную проверку\". */\nfunction nullOr(check) {\n  return (value) => value === null || check(value);\n}\n\n/**\n * Строгая проверка даты ISO 8601 с часовым поясом.\n * Обязательны буква T, секунды и пояс (Z или смещение). Дата без пояса, дата без времени\n * и несуществующие даты (30 февраля, 25 часов, 60 минут) не проходят.\n */\nfunction isIsoDatetimeWithTimezone(value) {\n  if (typeof value !== 'string') {\n    return false;\n  }\n  const match = ISO_DATETIME.exec(value);\n  if (match === null) {\n    return false;\n  }\n  const [, year, month, day, hour, minute, second, offset] = match;\n  const date = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day)));\n  const dateExists =\n    date.getUTCFullYear() === Number(year) &&\n    date.getUTCMonth() === Number(month) - 1 &&\n    date.getUTCDate() === Number(day);\n  const timeExists = Number(hour) < 24 && Number(minute) < 60 && Number(second) < 60;\n  if (!dateExists || !timeExists) {\n    return false;\n  }\n  if (offset === 'Z') {\n    return true;\n  }\n  const [, offsetHour, offsetMinute = '00'] = UTC_OFFSET.exec(offset);\n  return Number(offsetHour) <= 14 && Number(offsetMinute) < 60;\n}\n\n/**\n * Здесь порядковая проверка. Порядок важен, т.к. у события с несколькими ошибками залогирована будет\n * в таблицу первая, также и в овтет пойдет первая.\n */\nconst FIELD_RULES = [\n  { field: 'event_id', isValid: isNonBlankString, expected: 'непустая строка' },\n  { field: 'conversation_id', isValid: isNonBlankString, expected: 'непустая строка' },\n  { field: 'channel', isValid: oneOf(CHANNELS), expected: 'одно из: telegram, max' },\n  { field: 'chat_id', isValid: isNonBlankString, expected: 'непустая строка' },\n  { field: 'lead_id', isValid: nullOr(isNonBlankString), expected: 'непустая строка или null' },\n  {\n    field: 'occurred_at',\n    isValid: isIsoDatetimeWithTimezone,\n    expected: 'дата ISO 8601 с часовым поясом, например 2026-09-07T09:40:00+03:00',\n  },\n  { field: 'direction', isValid: oneOf(DIRECTIONS), expected: 'одно из: inbound, outbound' },\n  { field: 'author_id', isValid: nullOr(isNonBlankString), expected: 'непустая строка или null' },\n  {\n    field: 'author_type',\n    isValid: oneOf(AUTHOR_TYPES),\n    expected: 'одно из: partner, employee, bot, system',\n  },\n  {\n    field: 'message_type',\n    isValid: oneOf(MESSAGE_TYPES),\n    expected: 'одно из: text, file, image, voice, template',\n  },\n  { field: 'text', isValid: nullOr(isString), expected: 'строка или null' },\n];\n\n/** Первая найденная проблема события или null, если событие корректно. */\nfunction findProblems(event) {\n  const problems = [];\n  for (const rule of FIELD_RULES) {\n    if (!Object.hasOwn(event, rule.field)) {\n      problems.push({\n        issue_code: `invalid_${rule.field}`,\n        description: `Поле ${rule.field}: ключ отсутствует, ожидается ${rule.expected}`,\n      });\n    } else if (!rule.isValid(event[rule.field])) {\n      problems.push({\n        issue_code: `invalid_${rule.field}`,\n        description: `Поле ${rule.field}: недопустимое значение, ожидается ${rule.expected}`,\n      });\n    }\n  }\n  return problems;\n}\n\nfunction nonBlankStringOrNull(value) {\n  return isNonBlankString(value) ? value : null;\n}\n\n/** Запись об отклонённом событии: то, что уйдёт в журнал и в список errors ответа. */\nfunction buildRejection(itemIndex, event, issueCode, description) {\n  const eventObject = isObject(event) ? event : {};\n  return {\n    item_index: itemIndex,\n    event_id: nonBlankStringOrNull(eventObject.event_id),\n    conversation_id: nonBlankStringOrNull(eventObject.conversation_id),\n    issue_code: issueCode,\n    description,\n    payload: event,\n  };\n}\n\n/** Корректное событие только с полями контракта: неизвестные дополнительные поля отбрасываются. */\nfunction buildValidEvent(itemIndex, event) {\n  const validEvent = { item_index: itemIndex };\n  for (const rule of FIELD_RULES) {\n    validEvent[rule.field] = event[rule.field];\n  }\n  return validEvent;\n}\n\nconst body = $input.first().json.body;\n\nif (!isObject(body) || !Array.isArray(body.events)) {\n  return [\n    {\n      json: {\n        valid_request: false,\n        error: {\n          code: 422,\n          message: 'Некоррктная структура запроса',\n          hint: 'Ожидается JSON-объект с массивом events и заголовок Content-Type: application/json',\n        },\n      },\n    },\n  ];\n}\n\nconst validEvents = [];\nconst rejectedEvents = [];\n\nbody.events.forEach((event, itemIndex) => {\n  if (!isObject(event)) {\n    rejectedEvents.push(\n      buildRejection(itemIndex, event, 'invalid_event_structure', 'Элемент events должен быть JSON-объектом'),\n    );\n    return;\n  }\n  const problems = findProblems(event);\n  if (problems.length === 0) {\n    validEvents.push(buildValidEvent(itemIndex, event));\n  } else {\n    const description = problems.map((problem) => problem.description).join('; ');\n    rejectedEvents.push(buildRejection(itemIndex, event, problems[0].issue_code, description));\n  }\n\n});\n\nreturn [\n  {\n    json: {\n      valid_request: true,\n      received: body.events.length,\n      valid_events: validEvents,\n      rejected_events: rejectedEvents,\n    },\n  },\n];\n"
+        "jsCode": "const CHANNELS = ['telegram', 'max'];\nconst DIRECTIONS = ['inbound', 'outbound'];\nconst AUTHOR_TYPES = ['partner', 'employee', 'bot', 'system'];\nconst MESSAGE_TYPES = ['text', 'file', 'image', 'voice', 'template'];\n\nconst ISO_DATETIME = /^(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2}):(\\d{2})(?:\\.\\d{1,9})?(Z|[+-]\\d{2}(?::?\\d{2})?)$/;\nconst UTC_OFFSET = /^[+-](\\d{2}):?(\\d{2})?$/;\n\n/** Непустая строка: не пустая и не состоящая из одних пробелов. */\nfunction isNonBlankString(value) {\n  return typeof value === 'string' && value.trim() !== '';\n}\n\n/** Любая строка, в том числе пустая. */\nfunction isString(value) {\n  return typeof value === 'string';\n}\n\n/** Обычный JSON-объект: не null и не массив. */\nfunction isObject(value) {\n  return value !== null && typeof value === 'object' && !Array.isArray(value);\n}\n\n/** Возвращает проверку \"значение входит в список допустимых\". */\nfunction oneOf(allowed) {\n  return (value) => allowed.includes(value);\n}\n\n/** Возвращает проверку \"null или значение, прошедшее исходную проверку\". */\nfunction nullOr(check) {\n  return (value) => value === null || check(value);\n}\n\n/**\n * Строгая проверка даты ISO 8601 с часовым поясом.\n * Обязательны буква T, секунды и пояс (Z или смещение). Дата без пояса, дата без времени\n * и несуществующие даты (30 февраля, 25 часов, 60 минут) не проходят.\n */\nfunction isIsoDatetimeWithTimezone(value) {\n  if (typeof value !== 'string') {\n    return false;\n  }\n  const match = ISO_DATETIME.exec(value);\n  if (match === null) {\n    return false;\n  }\n  const [, year, month, day, hour, minute, second, offset] = match;\n  const date = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day)));\n  const dateExists =\n    date.getUTCFullYear() === Number(year) &&\n    date.getUTCMonth() === Number(month) - 1 &&\n    date.getUTCDate() === Number(day);\n  const timeExists = Number(hour) < 24 && Number(minute) < 60 && Number(second) < 60;\n  if (!dateExists || !timeExists) {\n    return false;\n  }\n  if (offset === 'Z') {\n    return true;\n  }\n  const [, offsetHour, offsetMinute = '00'] = UTC_OFFSET.exec(offset);\n  return Number(offsetHour) <= 14 && Number(offsetMinute) < 60;\n}\n\n/**\n * Здесь порядковая проверка. Порядок важен, т.к. у события с несколькими ошибками залогирована будет\n * в таблицу первая, также и в овтет пойдет первая.\n */\nconst FIELD_RULES = [\n  { field: 'event_id', isValid: isNonBlankString, expected: 'непустая строка' },\n  { field: 'conversation_id', isValid: isNonBlankString, expected: 'непустая строка' },\n  { field: 'channel', isValid: oneOf(CHANNELS), expected: 'одно из: telegram, max' },\n  { field: 'chat_id', isValid: isNonBlankString, expected: 'непустая строка' },\n  { field: 'lead_id', isValid: nullOr(isNonBlankString), expected: 'непустая строка или null' },\n  {\n    field: 'occurred_at',\n    isValid: isIsoDatetimeWithTimezone,\n    expected: 'дата ISO 8601 с часовым поясом, например 2026-09-07T09:40:00+03:00',\n  },\n  { field: 'direction', isValid: oneOf(DIRECTIONS), expected: 'одно из: inbound, outbound' },\n  { field: 'author_id', isValid: nullOr(isNonBlankString), expected: 'непустая строка или null' },\n  {\n    field: 'author_type',\n    isValid: oneOf(AUTHOR_TYPES),\n    expected: 'одно из: partner, employee, bot, system',\n  },\n  {\n    field: 'message_type',\n    isValid: oneOf(MESSAGE_TYPES),\n    expected: 'одно из: text, file, image, voice, template',\n  },\n  { field: 'text', isValid: nullOr(isString), expected: 'строка или null' },\n];\n\n/** Первая найденная проблема события или null, если событие корректно. */\nfunction findProblems(event) {\n  const problems = [];\n  for (const rule of FIELD_RULES) {\n    if (!Object.hasOwn(event, rule.field)) {\n      problems.push({\n        issue_code: `invalid_${rule.field}`,\n        description: `Поле ${rule.field}: ключ отсутствует, ожидается ${rule.expected}`,\n      });\n    } else if (!rule.isValid(event[rule.field])) {\n      problems.push({\n        issue_code: `invalid_${rule.field}`,\n        description: `Поле ${rule.field}: недопустимое значение, ожидается ${rule.expected}`,\n      });\n    }\n  }\n  return problems;\n}\n\nfunction nonBlankStringOrNull(value) {\n  return isNonBlankString(value) ? value : null;\n}\n\n/** Запись об отклонённом событии: то, что уйдёт в журнал и в список errors ответа. */\nfunction buildRejection(itemIndex, event, issueCode, description) {\n  const eventObject = isObject(event) ? event : {};\n  return {\n    item_index: itemIndex,\n    event_id: nonBlankStringOrNull(eventObject.event_id),\n    conversation_id: nonBlankStringOrNull(eventObject.conversation_id),\n    issue_code: issueCode,\n    description,\n    payload: event,\n  };\n}\n\n/** Корректное событие только с полями контракта: неизвестные дополнительные поля отбрасываются. */\nfunction buildValidEvent(itemIndex, event) {\n  const validEvent = { item_index: itemIndex };\n  for (const rule of FIELD_RULES) {\n    validEvent[rule.field] = event[rule.field];\n  }\n  return validEvent;\n}\n\nconst body = $input.first().json.body;\n\nif (!isObject(body) || !Array.isArray(body.events)) {\n  return [\n    {\n      json: {\n        valid_request: false,\n        error: {\n          code: 422,\n          message: 'Некорректная структура запроса',\n          hint: 'Ожидается JSON-объект с массивом events и заголовок Content-Type: application/json',\n        },\n      },\n    },\n  ];\n}\n\nconst validEvents = [];\nconst rejectedEvents = [];\n\nbody.events.forEach((event, itemIndex) => {\n  if (!isObject(event)) {\n    rejectedEvents.push(\n      buildRejection(itemIndex, event, 'invalid_event_structure', 'Элемент events должен быть JSON-объектом'),\n    );\n    return;\n  }\n  const problems = findProblems(event);\n  if (problems.length === 0) {\n    validEvents.push(buildValidEvent(itemIndex, event));\n  } else {\n    const description = problems.map((problem) => problem.description).join('; ');\n    rejectedEvents.push(buildRejection(itemIndex, event, problems[0].issue_code, description));\n  }\n\n});\n\nreturn [\n  {\n    json: {\n      valid_request: true,\n      received: body.events.length,\n      valid_events: validEvents,\n      rejected_events: rejectedEvents,\n    },\n  },\n];\n"
       },
-      "id": "66178303-be0d-427f-84fb-60ee18faa682",
+      "id": "c48648d2-d390-4391-aae0-49bc53807523",
       "name": "validate events",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -192,
-        32
+        208,
+        80
       ]
     },
     {
@@ -39,13 +39,13 @@
           "responseCode": 422
         }
       },
-      "id": "99ff5330-ac4a-4116-a31e-c358d0cb1552",
+      "id": "8f0e9dd1-00d9-497e-b1f8-1955d4284450",
       "name": "respond request error",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        256,
-        176
+        656,
+        224
       ]
     },
     {
@@ -73,13 +73,13 @@
         },
         "options": {}
       },
-      "id": "4c6f7bfd-f5c6-408d-86af-89f65535ca9f",
+      "id": "739b6c66-1648-4fc5-aaaa-9190a08f8030",
       "name": "valid request",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.4,
       "position": [
-        16,
-        32
+        416,
+        80
       ]
     },
     {
@@ -90,17 +90,17 @@
           "queryReplacement": "={{ [JSON.stringify($('validate events').item.json.valid_events), JSON.stringify($('validate events').item.json.rejected_events)] }}"
         }
       },
-      "id": "3ba19cce-50ce-4d09-9ad6-e8921f8a9bcc",
+      "id": "740c3dd4-96cf-41f2-baca-62dbb7a0f097",
       "name": "insert events",
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.8,
       "position": [
-        256,
-        -48
+        656,
+        0
       ],
       "credentials": {
         "postgres": {
-          "id": "ofwqDgZK9vHgFhf9",
+          "id": "9HUF1APQKT04gx2z",
           "name": "Postgres account"
         }
       }
@@ -111,13 +111,13 @@
         "responseBody": "={{ $json.result }}",
         "options": {}
       },
-      "id": "b2c42dd4-c64f-40b1-89d5-cd4ad9e5356b",
+      "id": "003d919d-c578-4ad2-a4ba-24b3320100f7",
       "name": "respond result",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        448,
-        -48
+        848,
+        0
       ]
     }
   ],
@@ -175,9 +175,17 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate"
-  }
+  },
+  "versionId": "da91df3f-5591-4f0b-94d8-2ba5dfd32206",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f75c3d908ea66ff8852e213892908c6b37f7df7ab07772be5ed6b6d663e7a382"
+  },
+  "nodeGroups": [],
+  "id": "ZmHg2jRNVZJKs9TH",
+  "tags": []
 }

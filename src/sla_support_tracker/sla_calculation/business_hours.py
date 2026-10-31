@@ -26,6 +26,7 @@ def business_time_elapsed_in_day(moment: datetime) -> timedelta:
         hours=local_moment.hour,
         minutes=local_moment.minute,
         seconds=local_moment.second,
+        microseconds=local_moment.microsecond,
     )
     clamped = min(max(since_midnight, BUSINESS_DAY_START), BUSINESS_DAY_END)
     return clamped - BUSINESS_DAY_START
