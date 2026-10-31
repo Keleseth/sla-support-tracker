@@ -1,0 +1,471 @@
+{
+  "as_of": "2026-09-08T12:00:00+03:00",
+  "scenarios": [
+    {
+      "number": 1,
+      "name": "late_answer",
+      "description": "07.09 09:40, ответ 10:37: 37 рабочих минут, ответ позже порога",
+      "files": [
+        "scenario_01_late_answer.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s01",
+          "channel": "telegram",
+          "chat_id": "chat-s01",
+          "lead_id": "lead-s01",
+          "first_inbound_at": "2026-09-07T09:40:00+03:00",
+          "first_response_at": "2026-09-07T10:37:00+03:00",
+          "employee_id": "care-001",
+          "employee_name": "Анна Тестовая",
+          "actual_minutes": "57.00",
+          "business_minutes": "37.00",
+          "status": "answered_late",
+          "issue_reason": ""
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "name": "overnight",
+      "description": "07.09 21:50, ответ 08.09 10:15: ночь не считается, 25 рабочих минут",
+      "files": [
+        "scenario_02_overnight.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s02",
+          "channel": "telegram",
+          "chat_id": "chat-s02",
+          "lead_id": "lead-s02",
+          "first_inbound_at": "2026-09-07T21:50:00+03:00",
+          "first_response_at": "2026-09-08T10:15:00+03:00",
+          "employee_id": "care-001",
+          "employee_name": "Анна Тестовая",
+          "actual_minutes": "745.00",
+          "business_minutes": "25.00",
+          "status": "answered_in_sla",
+          "issue_reason": ""
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "name": "bot_is_ignored",
+      "description": "бот отвечает в 10:01, ответом считается ответ care в 10:20",
+      "files": [
+        "scenario_03_bot_is_ignored.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s03",
+          "channel": "telegram",
+          "chat_id": "chat-s03",
+          "lead_id": "lead-s03",
+          "first_inbound_at": "2026-09-07T10:00:00+03:00",
+          "first_response_at": "2026-09-07T10:20:00+03:00",
+          "employee_id": "care-001",
+          "employee_name": "Анна Тестовая",
+          "actual_minutes": "20.00",
+          "business_minutes": "20.00",
+          "status": "answered_in_sla",
+          "issue_reason": ""
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "name": "second_inbound_keeps_timer",
+      "description": "два входящих (10:00 и 10:10), таймер идёт от первого",
+      "files": [
+        "scenario_04_second_inbound_keeps_timer.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s04",
+          "channel": "telegram",
+          "chat_id": "chat-s04",
+          "lead_id": "lead-s04",
+          "first_inbound_at": "2026-09-07T10:00:00+03:00",
+          "first_response_at": "2026-09-07T10:25:00+03:00",
+          "employee_id": "care-001",
+          "employee_name": "Анна Тестовая",
+          "actual_minutes": "25.00",
+          "business_minutes": "25.00",
+          "status": "answered_in_sla",
+          "issue_reason": ""
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "name": "file_reply",
+      "description": "ответ сотрудника файлом считается ответом",
+      "files": [
+        "scenario_05_file_reply.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s05",
+          "channel": "max",
+          "chat_id": "chat-s05",
+          "lead_id": "lead-s05",
+          "first_inbound_at": "2026-09-07T10:00:00+03:00",
+          "first_response_at": "2026-09-07T10:12:00+03:00",
+          "employee_id": "care-001",
+          "employee_name": "Анна Тестовая",
+          "actual_minutes": "12.00",
+          "business_minutes": "12.00",
+          "status": "answered_in_sla",
+          "issue_reason": ""
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "name": "exactly_30_minutes",
+      "description": "ответ ровно через 30 минут укладывается в SLA",
+      "files": [
+        "scenario_06_exactly_30_minutes.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s06",
+          "channel": "telegram",
+          "chat_id": "chat-s06",
+          "lead_id": "lead-s06",
+          "first_inbound_at": "2026-09-07T10:00:00+03:00",
+          "first_response_at": "2026-09-07T10:30:00+03:00",
+          "employee_id": "care-001",
+          "employee_name": "Анна Тестовая",
+          "actual_minutes": "30.00",
+          "business_minutes": "30.00",
+          "status": "answered_in_sla",
+          "issue_reason": ""
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "name": "30_minutes_1_second",
+      "description": "30 минут 1 секунда: статус по точному времени, в CSV округлено до 30.02",
+      "files": [
+        "scenario_07_30_minutes_1_second.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s07",
+          "channel": "telegram",
+          "chat_id": "chat-s07",
+          "lead_id": "lead-s07",
+          "first_inbound_at": "2026-09-07T10:00:00+03:00",
+          "first_response_at": "2026-09-07T10:30:01+03:00",
+          "employee_id": "care-001",
+          "employee_name": "Анна Тестовая",
+          "actual_minutes": "30.02",
+          "business_minutes": "30.02",
+          "status": "answered_late",
+          "issue_reason": ""
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "name": "night_only",
+      "description": "23:00 до 09:00: 0 рабочих и 600 календарных минут",
+      "files": [
+        "scenario_08_night_only.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s08",
+          "channel": "telegram",
+          "chat_id": "chat-s08",
+          "lead_id": "lead-s08",
+          "first_inbound_at": "2026-09-07T23:00:00+03:00",
+          "first_response_at": "2026-09-08T09:00:00+03:00",
+          "employee_id": "care-001",
+          "employee_name": "Анна Тестовая",
+          "actual_minutes": "600.00",
+          "business_minutes": "0.00",
+          "status": "answered_in_sla",
+          "issue_reason": ""
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "name": "waiting",
+      "description": "08.09 11:45 без ответа, as_of 12:00: ожидание 15 минут",
+      "files": [
+        "scenario_09_waiting.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s09",
+          "channel": "telegram",
+          "chat_id": "chat-s09",
+          "lead_id": "lead-s09",
+          "first_inbound_at": "2026-09-08T11:45:00+03:00",
+          "first_response_at": "",
+          "employee_id": "",
+          "employee_name": "",
+          "actual_minutes": "15.00",
+          "business_minutes": "15.00",
+          "status": "waiting",
+          "issue_reason": ""
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "name": "unanswered_overdue",
+      "description": "08.09 11:30 без ответа, as_of 12:00: ожидание ровно 30 минут уже просрочка",
+      "files": [
+        "scenario_10_unanswered_overdue.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s10",
+          "channel": "telegram",
+          "chat_id": "chat-s10",
+          "lead_id": "lead-s10",
+          "first_inbound_at": "2026-09-08T11:30:00+03:00",
+          "first_response_at": "",
+          "employee_id": "",
+          "employee_name": "",
+          "actual_minutes": "30.00",
+          "business_minutes": "30.00",
+          "status": "unanswered_overdue",
+          "issue_reason": ""
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "name": "sales_does_not_answer",
+      "description": "sales отвечает в 10:05, ответом считается ответ care в 10:25",
+      "files": [
+        "scenario_11_sales_does_not_answer.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s11",
+          "channel": "telegram",
+          "chat_id": "chat-s11",
+          "lead_id": "lead-s11",
+          "first_inbound_at": "2026-09-07T10:00:00+03:00",
+          "first_response_at": "2026-09-07T10:25:00+03:00",
+          "employee_id": "care-001",
+          "employee_name": "Анна Тестовая",
+          "actual_minutes": "25.00",
+          "business_minutes": "25.00",
+          "status": "answered_in_sla",
+          "issue_reason": ""
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "name": "missing_lead_id",
+      "description": "у всех событий обращения lead_id равен null",
+      "files": [
+        "scenario_12_missing_lead_id.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s12",
+          "channel": "telegram",
+          "chat_id": "chat-s12",
+          "lead_id": "",
+          "first_inbound_at": "2026-09-07T10:00:00+03:00",
+          "first_response_at": "",
+          "employee_id": "",
+          "employee_name": "",
+          "actual_minutes": "",
+          "business_minutes": "",
+          "status": "data_issue",
+          "issue_reason": "missing_lead_id"
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "name": "unknown_employee",
+      "description": "неизвестный сотрудник отвечает между входящим и ответом care",
+      "files": [
+        "scenario_13_unknown_employee.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s13",
+          "channel": "telegram",
+          "chat_id": "chat-s13",
+          "lead_id": "lead-s13",
+          "first_inbound_at": "2026-09-07T10:00:00+03:00",
+          "first_response_at": "",
+          "employee_id": "",
+          "employee_name": "",
+          "actual_minutes": "",
+          "business_minutes": "",
+          "status": "data_issue",
+          "issue_reason": "unresolved_employee_author"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "name": "replay_same_package",
+      "description": "тот же пакет отправляется дважды: новых строк и изменений в отчёте нет",
+      "files": [
+        "scenario_14_replay_same_package.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s14",
+          "channel": "telegram",
+          "chat_id": "chat-s14",
+          "lead_id": "lead-s14",
+          "first_inbound_at": "2026-09-07T10:00:00+03:00",
+          "first_response_at": "2026-09-07T10:15:00+03:00",
+          "employee_id": "care-001",
+          "employee_name": "Анна Тестовая",
+          "actual_minutes": "15.00",
+          "business_minutes": "15.00",
+          "status": "answered_in_sla",
+          "issue_reason": ""
+        }
+      ],
+      "send_twice": true,
+      "expected_second_response": {
+        "received": 2,
+        "inserted": 0,
+        "duplicates": 2,
+        "rejected": 0
+      }
+    },
+    {
+      "number": 15,
+      "name": "reply_loaded_before_inbound",
+      "description": "ответ загружен раньше входящего, но его occurred_at позже: считаем по occurred_at",
+      "files": [
+        "scenario_15_part1_reply_first.json",
+        "scenario_15_part2_inbound_later.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s15",
+          "channel": "telegram",
+          "chat_id": "chat-s15",
+          "lead_id": "lead-s15",
+          "first_inbound_at": "2026-09-07T10:00:00+03:00",
+          "first_response_at": "2026-09-07T10:20:00+03:00",
+          "employee_id": "care-001",
+          "employee_name": "Анна Тестовая",
+          "actual_minutes": "20.00",
+          "business_minutes": "20.00",
+          "status": "answered_in_sla",
+          "issue_reason": ""
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "name": "invalid_date_in_one_event",
+      "description": "в пакете одно событие с датой без часового пояса: отклоняется только оно",
+      "files": [
+        "scenario_16_invalid_date_in_one_event.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s16",
+          "channel": "telegram",
+          "chat_id": "chat-s16",
+          "lead_id": "lead-s16",
+          "first_inbound_at": "2026-09-07T10:00:00+03:00",
+          "first_response_at": "2026-09-07T10:20:00+03:00",
+          "employee_id": "care-001",
+          "employee_name": "Анна Тестовая",
+          "actual_minutes": "20.00",
+          "business_minutes": "20.00",
+          "status": "answered_in_sla",
+          "issue_reason": ""
+        }
+      ],
+      "expected_first_response": {
+        "received": 3,
+        "inserted": 2,
+        "duplicates": 0,
+        "rejected": 1
+      },
+      "expected_ingestion_errors": [
+        {
+          "event_id": "s16-3",
+          "issue_code": "invalid_occurred_at"
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "name": "sunday",
+      "description": "воскресенье 06.09: график тот же, 20 рабочих минут",
+      "files": [
+        "scenario_17_sunday.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s17",
+          "channel": "telegram",
+          "chat_id": "chat-s17",
+          "lead_id": "lead-s17",
+          "first_inbound_at": "2026-09-06T10:00:00+03:00",
+          "first_response_at": "2026-09-06T10:20:00+03:00",
+          "employee_id": "care-001",
+          "employee_name": "Анна Тестовая",
+          "actual_minutes": "20.00",
+          "business_minutes": "20.00",
+          "status": "answered_in_sla",
+          "issue_reason": ""
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "name": "two_conversations_in_one_batch",
+      "description": "два обращения в одном пакете вперемешку: каждое событие попадает в своё обращение",
+      "files": [
+        "scenario_18_two_conversations_in_one_batch.json"
+      ],
+      "expected_rows": [
+        {
+          "conversation_id": "case-s18a",
+          "channel": "telegram",
+          "chat_id": "chat-s18a",
+          "lead_id": "lead-s18a",
+          "first_inbound_at": "2026-09-07T10:00:00+03:00",
+          "first_response_at": "2026-09-07T10:10:00+03:00",
+          "employee_id": "care-001",
+          "employee_name": "Анна Тестовая",
+          "actual_minutes": "10.00",
+          "business_minutes": "10.00",
+          "status": "answered_in_sla",
+          "issue_reason": ""
+        },
+        {
+          "conversation_id": "case-s18b",
+          "channel": "max",
+          "chat_id": "chat-s18b",
+          "lead_id": "lead-s18b",
+          "first_inbound_at": "2026-09-07T10:05:00+03:00",
+          "first_response_at": "2026-09-07T10:50:00+03:00",
+          "employee_id": "care-001",
+          "employee_name": "Анна Тестовая",
+          "actual_minutes": "45.00",
+          "business_minutes": "45.00",
+          "status": "answered_late",
+          "issue_reason": ""
+        }
+      ]
+    }
+  ]
+}

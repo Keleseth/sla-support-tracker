@@ -1,0 +1,17 @@
+{
+  "events": [
+    {
+      "event_id": "s15-2",
+      "conversation_id": "case-s15",
+      "channel": "telegram",
+      "chat_id": "chat-s15",
+      "lead_id": "lead-s15",
+      "occurred_at": "2026-09-07T10:00:00+03:00",
+      "direction": "inbound",
+      "author_id": "partner-15",
+      "author_type": "partner",
+      "message_type": "text",
+      "text": "Здравствуйте, нужна помощь"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "events": [
+    {
+      "event_id": "s15-1",
+      "conversation_id": "case-s15",
+      "channel": "telegram",
+      "chat_id": "chat-s15",
+      "lead_id": "lead-s15",
+      "occurred_at": "2026-09-07T10:20:00+03:00",
+      "direction": "outbound",
+      "author_id": "care-001",
+      "author_type": "employee",
+      "message_type": "text",
+      "text": "Добрый день, уточняем вопрос"
+    }
+  ]
+}

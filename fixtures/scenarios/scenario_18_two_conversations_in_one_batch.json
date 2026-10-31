@@ -1,0 +1,69 @@
+{
+  "events": [
+    {
+      "event_id": "s18a-1",
+      "conversation_id": "case-s18a",
+      "channel": "telegram",
+      "chat_id": "chat-s18a",
+      "lead_id": "lead-s18a",
+      "occurred_at": "2026-09-07T10:00:00+03:00",
+      "direction": "inbound",
+      "author_id": "partner-18a",
+      "author_type": "partner",
+      "message_type": "text",
+      "text": "Здравствуйте, нужна помощь"
+    },
+    {
+      "event_id": "s18b-1",
+      "conversation_id": "case-s18b",
+      "channel": "max",
+      "chat_id": "chat-s18b",
+      "lead_id": "lead-s18b",
+      "occurred_at": "2026-09-07T10:05:00+03:00",
+      "direction": "inbound",
+      "author_id": "partner-18b",
+      "author_type": "partner",
+      "message_type": "text",
+      "text": "Здравствуйте, нужна помощь"
+    },
+    {
+      "event_id": "s18b-2",
+      "conversation_id": "case-s18b",
+      "channel": "max",
+      "chat_id": "chat-s18b",
+      "lead_id": "lead-s18b",
+      "occurred_at": "2026-09-07T10:08:00+03:00",
+      "direction": "outbound",
+      "author_id": "sales-001",
+      "author_type": "employee",
+      "message_type": "text",
+      "text": "Коллеги, подскажите по договору"
+    },
+    {
+      "event_id": "s18a-2",
+      "conversation_id": "case-s18a",
+      "channel": "telegram",
+      "chat_id": "chat-s18a",
+      "lead_id": "lead-s18a",
+      "occurred_at": "2026-09-07T10:10:00+03:00",
+      "direction": "outbound",
+      "author_id": "care-001",
+      "author_type": "employee",
+      "message_type": "text",
+      "text": "Добрый день, уточняем вопрос"
+    },
+    {
+      "event_id": "s18b-3",
+      "conversation_id": "case-s18b",
+      "channel": "max",
+      "chat_id": "chat-s18b",
+      "lead_id": "lead-s18b",
+      "occurred_at": "2026-09-07T10:50:00+03:00",
+      "direction": "outbound",
+      "author_id": "care-001",
+      "author_type": "employee",
+      "message_type": "text",
+      "text": "Добрый день, уточняем вопрос"
+    }
+  ]
+}

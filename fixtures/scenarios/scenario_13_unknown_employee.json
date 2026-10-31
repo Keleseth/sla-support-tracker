@@ -1,0 +1,43 @@
+{
+  "events": [
+    {
+      "event_id": "s13-1",
+      "conversation_id": "case-s13",
+      "channel": "telegram",
+      "chat_id": "chat-s13",
+      "lead_id": "lead-s13",
+      "occurred_at": "2026-09-07T10:00:00+03:00",
+      "direction": "inbound",
+      "author_id": "partner-13",
+      "author_type": "partner",
+      "message_type": "text",
+      "text": "Здравствуйте, нужна помощь"
+    },
+    {
+      "event_id": "s13-2",
+      "conversation_id": "case-s13",
+      "channel": "telegram",
+      "chat_id": "chat-s13",
+      "lead_id": "lead-s13",
+      "occurred_at": "2026-09-07T10:10:00+03:00",
+      "direction": "outbound",
+      "author_id": "staff-999",
+      "author_type": "employee",
+      "message_type": "text",
+      "text": "Отвечаю от имени поддержки"
+    },
+    {
+      "event_id": "s13-3",
+      "conversation_id": "case-s13",
+      "channel": "telegram",
+      "chat_id": "chat-s13",
+      "lead_id": "lead-s13",
+      "occurred_at": "2026-09-07T10:20:00+03:00",
+      "direction": "outbound",
+      "author_id": "care-001",
+      "author_type": "employee",
+      "message_type": "text",
+      "text": "Добрый день, уточняем вопрос"
+    }
+  ]
+}

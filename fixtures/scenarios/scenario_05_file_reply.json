@@ -1,0 +1,30 @@
+{
+  "events": [
+    {
+      "event_id": "s05-1",
+      "conversation_id": "case-s05",
+      "channel": "max",
+      "chat_id": "chat-s05",
+      "lead_id": "lead-s05",
+      "occurred_at": "2026-09-07T10:00:00+03:00",
+      "direction": "inbound",
+      "author_id": "partner-05",
+      "author_type": "partner",
+      "message_type": "text",
+      "text": "Здравствуйте, нужна помощь"
+    },
+    {
+      "event_id": "s05-2",
+      "conversation_id": "case-s05",
+      "channel": "max",
+      "chat_id": "chat-s05",
+      "lead_id": "lead-s05",
+      "occurred_at": "2026-09-07T10:12:00+03:00",
+      "direction": "outbound",
+      "author_id": "care-001",
+      "author_type": "employee",
+      "message_type": "file",
+      "text": null
+    }
+  ]
+}
